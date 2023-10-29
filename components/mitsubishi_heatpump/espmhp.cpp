@@ -116,7 +116,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
                     hp->setTemperature(cool_setpoint.value());
                     this->target_temperature = cool_setpoint.value();
                 }
-                this->action = climate::CLIMATE_ACTION_IDLE;
+                // this->action = climate::CLIMATE_ACTION_IDLE;
                 updated = true;
             }
             break;
@@ -128,7 +128,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
                     hp->setTemperature(heat_setpoint.value());
                     this->target_temperature = heat_setpoint.value();
                 }
-                this->action = climate::CLIMATE_ACTION_IDLE;
+                // this->action = climate::CLIMATE_ACTION_IDLE;
                 updated = true;
             }
             break;
@@ -148,7 +148,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
                     hp->setTemperature(auto_setpoint.value());
                     this->target_temperature = auto_setpoint.value();
                 }
-                this->action = climate::CLIMATE_ACTION_IDLE;
+                // this->action = climate::CLIMATE_ACTION_IDLE;
             }
             updated = true;
             break;
@@ -275,7 +275,7 @@ void MitsubishiHeatPump::hpSettingsChanged() {
                 heat_setpoint = currentSettings.temperature;
                 save(currentSettings.temperature, heat_storage);
             }
-            this->action = climate::CLIMATE_ACTION_IDLE;
+            // this->action = climate::CLIMATE_ACTION_IDLE;
         } else if (strcmp(currentSettings.mode, "DRY") == 0) {
             this->mode = climate::CLIMATE_MODE_DRY;
             this->action = climate::CLIMATE_ACTION_DRYING;
@@ -285,7 +285,7 @@ void MitsubishiHeatPump::hpSettingsChanged() {
                 cool_setpoint = currentSettings.temperature;
                 save(currentSettings.temperature, cool_storage);
             }
-            this->action = climate::CLIMATE_ACTION_IDLE;
+            // this->action = climate::CLIMATE_ACTION_IDLE;
         } else if (strcmp(currentSettings.mode, "FAN") == 0) {
             this->mode = climate::CLIMATE_MODE_FAN_ONLY;
             this->action = climate::CLIMATE_ACTION_FAN;
