@@ -18,8 +18,9 @@
 #define USE_CALLBACKS
 
 #include "esphome.h"
+#include "esphome/components/select/select.h"
 #include "esphome/core/preferences.h"
-#include "esphome/core/preferences.h"
+
 #include <chrono>
 
 #include "HeatPump.h"
@@ -42,7 +43,7 @@ static const uint8_t ESPMHP_MAX_TEMPERATURE = 31; // degrees C,
 static const float   ESPMHP_TEMPERATURE_STEP = 0.5; // temperature setting step,
                                                     // in degrees C
 
-class MitsubishiHeatPump : public PollingComponent, public climate::Climate {
+class MitsubishiHeatPump : public esphome::PollingComponent, public esphome::climate::Climate {
 
     public:
 
@@ -63,7 +64,7 @@ class MitsubishiHeatPump : public PollingComponent, public climate::Climate {
 
         // Set the baud rate. Must be called before setup() to have any effect.
         void set_baud_rate(int);
-		
+
         // Set the RX pin. Must be called before setup() to have any effect.
         void set_rx_pin(int);
 
@@ -86,21 +87,21 @@ class MitsubishiHeatPump : public PollingComponent, public climate::Climate {
         void update() override;
 
         // Configure the climate object with traits that we support.
-        climate::ClimateTraits traits() override;
+        esphome::climate::ClimateTraits traits() override;
 
         // Get a mutable reference to the traits that we support.
-        climate::ClimateTraits& config_traits();
+        esphome::climate::ClimateTraits& config_traits();
 
         // Debugging function to print the object's state.
         void dump_state();
 
         // Handle a request from the user to change settings.
-        void control(const climate::ClimateCall &call) override;
+        void control(const esphome::climate::ClimateCall &call) override;
 
         // Use the temperature from an external sensor. Use
         // set_remote_temp(0) to switch back to the internal sensor.
         void set_remote_temperature(float);
-		
+
         void set_vertical_vane_select(esphome::select::Select *vertical_vane_select);
         void set_horizontal_vane_select(esphome::select::Select *horizontal_vane_select);
 
@@ -125,8 +126,8 @@ class MitsubishiHeatPump : public PollingComponent, public climate::Climate {
         HeatPump* hp;
 
         // The ClimateTraits supported by this HeatPump.
-        climate::ClimateTraits traits_;
-		
+        esphome::climate::ClimateTraits traits_;
+
         // Vane position
         void update_swing_horizontal(const std::string &swing);
         void update_swing_vertical(const std::string &swing);
@@ -155,9 +156,9 @@ class MitsubishiHeatPump : public PollingComponent, public climate::Climate {
         esphome::optional<float> heat_setpoint;
         esphome::optional<float> auto_setpoint;
 
-        static void save(float value, ESPPreferenceObject& storage);
+        static void save(float value, esphome::ESPPreferenceObject& storage);
         static esphome::optional<float> load(esphome::ESPPreferenceObject& storage);
-		
+
         esphome::select::Select *vertical_vane_select_ =
             nullptr;  // Select to store manual position of vertical swing
         esphome::select::Select *horizontal_vane_select_ =
