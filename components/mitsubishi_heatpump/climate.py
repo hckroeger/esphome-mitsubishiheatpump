@@ -6,6 +6,7 @@ from esphome.const import (
     CONF_ID,
     CONF_HARDWARE_UART,
     CONF_BAUD_RATE,
+    CONF_HARDWARE_UART,
     CONF_RX_PIN,
     CONF_TX_PIN,
     CONF_UPDATE_INTERVAL,
@@ -80,9 +81,9 @@ CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
         cv.Optional(CONF_UPDATE_INTERVAL, default="500ms"): cv.All(
             cv.update_interval, cv.Range(max=cv.TimePeriod(milliseconds=9000))
         ),
-        # Add selects for vertical and horizontal vane positions
-        cv.Optional(CONF_HORIZONTAL_SWING_SELECT): SELECT_SCHEMA,
-        cv.Optional(CONF_VERTICAL_SWING_SELECT): SELECT_SCHEMA,
+       # Add selects for vertical and horizontal vane positions
+       cv.Optional(CONF_HORIZONTAL_SWING_SELECT): SELECT_SCHEMA,
+       cv.Optional(CONF_VERTICAL_SWING_SELECT): SELECT_SCHEMA,
         # Optionally override the supported ClimateTraits.
         cv.Optional(CONF_SUPPORTS, default={}): cv.Schema(
             {
@@ -120,6 +121,7 @@ def to_code(config):
 
     if CONF_REMOTE_PING_TIMEOUT in config:
         cg.add(var.set_remote_ping_timeout_minutes(config[CONF_REMOTE_PING_TIMEOUT]))
+
 
     supports = config[CONF_SUPPORTS]
     traits = var.config_traits()
