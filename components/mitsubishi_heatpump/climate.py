@@ -15,7 +15,7 @@ from esphome.const import (
 )
 from esphome.core import CORE, coroutine
 
-AUTO_LOAD = ["climate"]
+AUTO_LOAD = ["climate", "select"]
 
 CONF_SUPPORTS = "supports"
 CONF_HORIZONTAL_SWING_SELECT = "horizontal_vane_select"
