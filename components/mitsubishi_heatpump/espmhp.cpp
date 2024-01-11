@@ -236,7 +236,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
     if (has_mode){
         this->mode = *call.get_mode();
     }
-	
+
     if (last_remote_temperature_sensor_update_.has_value()) {
         // Some remote temperature sensors will only issue updates when a change
         // in temperature occurs. 
@@ -253,7 +253,7 @@ void MitsubishiHeatPump::control(const climate::ClimateCall &call) {
         last_remote_temperature_sensor_update_ =
             std::chrono::steady_clock::now();
     }
-	
+
     switch (this->mode) {
         case climate::CLIMATE_MODE_COOL:
             hp->setModeSetting("COOL");
@@ -488,7 +488,7 @@ void MitsubishiHeatPump::hpSettingsChanged() {
     } else { //case "AUTO" or default:
         this->fan_mode = climate::CLIMATE_FAN_AUTO;
     }
-    ESP_LOGI(TAG, "Fan mode is: %i", this->fan_mode);
+    ESP_LOGI(TAG, "Fan mode is: %i", this->fan_mode.value_or(-1));
 
     /* ******** HANDLE MITSUBISHI VANE CHANGES ********
      * const char* VANE_MAP[7]        = {"AUTO", "1", "2", "3", "4", "5", "SWING"};
@@ -539,7 +539,7 @@ void MitsubishiHeatPump::hpSettingsChanged() {
     }
 
     ESP_LOGI(TAG, "Horizontal vane mode is: %s", currentSettings.wideVane);
-	
+
     /*
      * ******** HANDLE TARGET TEMPERATURE CHANGES ********
      */
@@ -599,7 +599,7 @@ void MitsubishiHeatPump::hpStatusChanged(heatpumpStatus currentStatus) {
             this->action = climate::CLIMATE_ACTION_OFF;
     }
 
-
+    this->operating_ = currentStatus.operating;
 
     this->publish_state();
 }
@@ -700,7 +700,7 @@ void MitsubishiHeatPump::setup() {
                 this->hpStatusChanged(currentStatus);
             }
     );
-	
+
     hp->setPacketCallback(this->log_packet);    
 #endif
 
@@ -709,11 +709,11 @@ void MitsubishiHeatPump::setup() {
             "hw_serial(%p) is &Serial(%p)? %s",
             this->get_hw_serial_(),
             &Serial,
-            YESNO(this->get_hw_serial_() == &Serial)
+            YESNO((void *)this->get_hw_serial_() == (void *)&Serial)
     );
 
     ESP_LOGCONFIG(TAG, "Calling hp->connect(%p)", this->get_hw_serial_());
-    if (hp->connect(this->get_hw_serial_(), this->baud_, -1, -1)) {
+    if (hp->connect(this->get_hw_serial_(), this->baud_, this->rx_pin_, this->tx_pin_)) {
         hp->sync();
     }
     else {
