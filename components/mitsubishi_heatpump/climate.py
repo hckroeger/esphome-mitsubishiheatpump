@@ -6,7 +6,6 @@ from esphome.const import (
     CONF_ID,
     CONF_HARDWARE_UART,
     CONF_BAUD_RATE,
-    CONF_HARDWARE_UART,
     CONF_RX_PIN,
     CONF_TX_PIN,
     CONF_UPDATE_INTERVAL,
