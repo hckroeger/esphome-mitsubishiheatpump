@@ -12,7 +12,7 @@ from esphome.const import (
     CONF_MODE,
     CONF_FAN_MODE,
     CONF_SWING_MODE,
-    PLATFORM_ESP8266
+    PLATFORM_ESP8266,
 )
 from esphome.core import CORE, coroutine
 
