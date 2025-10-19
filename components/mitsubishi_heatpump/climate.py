@@ -61,7 +61,7 @@ def valid_uart(uart):
 SELECT_SCHEMA = select.select_schema(MitsubishiACSelect)
 
 CONFIG_SCHEMA = (
-    climate.climate_schema(climate_class=MitsubishiHeatPump)
+    climate.climate_schema(MitsubishiHeatPump)
     .extend(
         {
             cv.Optional(CONF_HARDWARE_UART, default="UART0"): valid_uart,
