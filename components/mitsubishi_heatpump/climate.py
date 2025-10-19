@@ -59,10 +59,7 @@ def valid_uart(uart):
 
     return cv.one_of(*uarts, upper=True)(uart)
 
-SELECT_SCHEMA = select.select_schema(
-    select_class=MitsubishiACSelect,
-    component=True,
-)
+SELECT_SCHEMA = select.select_schema(MitsubishiACSelect)
 
 CONFIG_SCHEMA = (
     climate.climate_schema(climate_class=MitsubishiHeatPump)
@@ -145,17 +142,13 @@ def to_code(config):
 
     if CONF_HORIZONTAL_SWING_SELECT in config:
         conf = config[CONF_HORIZONTAL_SWING_SELECT]
-        swing_select = yield select.new_select(
-            conf, options=HORIZONTAL_SWING_OPTIONS, select_class=MitsubishiACSelect
-        )
+        swing_select = yield select.new_select(conf, options=HORIZONTAL_SWING_OPTIONS)
         yield cg.register_component(swing_select, conf)
         cg.add(var.set_horizontal_vane_select(swing_select))
 
     if CONF_VERTICAL_SWING_SELECT in config:
         conf = config[CONF_VERTICAL_SWING_SELECT]
-        swing_select = yield select.new_select(
-            conf, options=VERTICAL_SWING_OPTIONS, select_class=MitsubishiACSelect
-        )
+        swing_select = yield select.new_select(conf, options=VERTICAL_SWING_OPTIONS)
         yield cg.register_component(swing_select, conf)
         cg.add(var.set_vertical_vane_select(swing_select))
 
